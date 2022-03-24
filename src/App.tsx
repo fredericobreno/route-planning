@@ -30,12 +30,14 @@ const App: React.FC = () => {
     <div style={{ minHeight: '100vh' }}>
       <FileUpload />
       <ExportButton />
-      <label>num per area:</label>
+      <label>num por area:</label>
       <input
         type='number'
         onChange={handleNumMarkersPerGroupChange}
         value={numMarkersPerGroup}
       />
+      <label>num de areas: </label>
+      {new Set(markers.map(marker => marker.groupId)).size}
       <Map />
     </div>
   )
