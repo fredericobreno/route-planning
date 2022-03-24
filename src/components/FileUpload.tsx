@@ -5,7 +5,7 @@ import useMapContext from '../hooks/useMapContext'
 import { getClosestMarkersInGroupsOf } from './Map'
 
 const FileUpload: React.FC = () => {
-  const { map, setMarkers } = useMapContext()
+  const { map, setMarkers, numMarkersPerGroup } = useMapContext()
 
   const storeDataIntoContext = (data: any[]) => {
     let _markers: MarkerType[] = []
@@ -41,7 +41,7 @@ const FileUpload: React.FC = () => {
           item => item.lat === value.lat && item.lng === value.lng,
         ) === index,
     )
-    _markers = getClosestMarkersInGroupsOf(_markers, 6)
+    _markers = getClosestMarkersInGroupsOf(_markers, numMarkersPerGroup)
     setMarkers(_markers)
     map.flyToBounds(_markers.map(marker => [marker.lat, marker.lng]))
   }
