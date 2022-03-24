@@ -9,7 +9,9 @@ const FileUpload: React.FC = () => {
 
   const storeDataIntoContext = (data: any[]) => {
     let _markers: MarkerType[] = []
-    const columns = data.shift().map((column: string) => column.toLowerCase())
+    const columns = data
+      .shift()
+      .map((column: string) => column.toLowerCase().trim())
 
     data.forEach((row: any, rowIndex: number) => {
       const lat: number = row[columns.indexOf('lat')]
