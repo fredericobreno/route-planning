@@ -43,7 +43,7 @@ const FileUpload: React.FC = () => {
     )
     _markers = getClosestMarkersInGroupsOf(_markers, numMarkersPerGroup)
     setMarkers(_markers)
-    map.flyToBounds(_markers.map(marker => [marker.lat, marker.lng]))
+    map?.flyToBounds(_markers.map(marker => [marker.lat, marker.lng]))
   }
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

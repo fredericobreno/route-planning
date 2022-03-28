@@ -1,6 +1,13 @@
 import { LatLngLiteral } from 'leaflet'
-import React from 'react'
-import { MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet'
+import React, { useEffect } from 'react'
+import {
+  MapContainer,
+  Marker,
+  Polygon,
+  Popup,
+  TileLayer,
+  Tooltip,
+} from 'react-leaflet'
 import { MarkerType } from '../contexts/MapContext'
 import useMapContext from '../hooks/useMapContext'
 import { getHull } from '../utils/convexHull'
@@ -48,12 +55,22 @@ export const getClosestMarkersInGroupsOf = (
 
 const Map: React.FC = () => {
   const {
+    map,
     setMap,
     markers,
     setMarkers,
     selectedGroupId,
     setSelectedGroupId,
+    showTooltip,
+    setShowTooltip,
   } = useMapContext()
+
+  useEffect(() => {
+    if (map)
+      map.on('zoomend', e => {
+        setShowTooltip(e.target._zoom > 13)
+      })
+  }, [map, setShowTooltip])
 
   return (
     <MapContainer
@@ -65,7 +82,7 @@ const Map: React.FC = () => {
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
       />
       {markers.map(marker => (
         <Marker
@@ -80,6 +97,11 @@ const Map: React.FC = () => {
             },
           }}
         >
+          {showTooltip && (
+            <Tooltip permanent>
+              <span>{marker.data?.cliente}</span>
+            </Tooltip>
+          )}
           {selectedGroupId > -1 && (
             <Popup>
               <div>
